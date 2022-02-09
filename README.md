@@ -2,7 +2,9 @@
 
 Menu group and accordion component for Angular Material
 
-[GitHub](https://github.com/w3soto/ngx-mat-menu-group)
+[![w3soto](https://circleci.com/gh/w3soto/ngx-mat-menu-group.svg?style=svg)](https://circleci.com/gh/w3soto/ngx-mat-menu-group)
+
+[StackBlitz Demo](https://stackblitz.com/edit/angular-ivy-cx4uk3)
 
 ## Features
 * Key navigation
@@ -95,8 +97,8 @@ Template
 
 | @Output | Event value |
 | ------- | ----------- |
-| **groupOpened** | NgxMatMenuGroup |
-| **groupClosed** | NgxMatMenuGroup |
+| **groupOpened** | void |
+| **groupClosed** | void |
 
 ## Directives 
  
@@ -108,8 +110,8 @@ Template
 
 | @Output | Event value |
 | ------- | ----------- |
-| **groupOpened** | NgxMatMenuGroupTrigger |
-| **groupClosed** | NgxMatMenuGroupTrigger |
+| **groupOpened** | void |
+| **groupClosed** | void |
 
 **ngxMatMenuGroupAccordion**
 
