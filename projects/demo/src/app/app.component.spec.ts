@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { MatMenuModule} from "@angular/material/menu";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+
 import { AppComponent } from './app.component';
+import { NgxMatMenuGroupModule } from "../../../ngx-mat-menu-group/src/lib/mat-menu-group.module";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -7,6 +12,12 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [
+        NoopAnimationsModule,
+        MatMenuModule,
+        MatSlideToggleModule,
+        NgxMatMenuGroupModule
+      ]
     }).compileComponents();
   });
 
@@ -16,16 +27,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'demo'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('demo');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('demo app is running!');
-  });
 });

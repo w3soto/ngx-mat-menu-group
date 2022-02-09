@@ -8,13 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
 
   accordion: boolean = true;
-
-  expandFirst: boolean = false;
-
-  expandSecond: boolean = false;
-
-  disableInnerItems: boolean = false;
-
   disableSecondGroup: boolean = false;
 
   ngOnInit(): void {
