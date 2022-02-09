@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mat-menu-group": {
+    "ngx-mat-menu-group": {
       "projectType": "library",
-      "root": "projects/mat-menu-group",
-      "sourceRoot": "projects/mat-menu-group/src",
+      "root": "projects/ngx-mat-menu-group",
+      "sourceRoot": "projects/ngx-mat-menu-group/src",
       "prefix": "ngx",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/mat-menu-group/ng-package.json"
+            "project": "projects/ngx-mat-menu-group/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/mat-menu-group/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngx-mat-menu-group/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/mat-menu-group/tsconfig.lib.json"
+              "tsConfig": "projects/ngx-mat-menu-group/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,9 +27,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/mat-menu-group/src/test.ts",
-            "tsConfig": "projects/mat-menu-group/tsconfig.spec.json",
-            "karmaConfig": "projects/mat-menu-group/karma.conf.js"
+            "main": "projects/ngx-mat-menu-group/src/test.ts",
+            "tsConfig": "projects/ngx-mat-menu-group/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-mat-menu-group/karma.conf.js"
           }
         }
       }
@@ -138,5 +138,5 @@
       }
     }
   },
-  "defaultProject": "mat-menu-group"
+  "defaultProject": "ngx-mat-menu-group"
 }
