@@ -10,9 +10,9 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "paths": {
-      "mat-menu-group": [
-        "dist/mat-menu-group/mat-menu-group",
-        "dist/mat-menu-group"
+      "ngx-mat-menu-group": [
+        "dist/ngx-mat-menu-group/mat-menu-group",
+        "dist/ngx-mat-menu-group"
       ]
     },
     "noFallthroughCasesInSwitch": true,
