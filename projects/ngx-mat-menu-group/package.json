@@ -1,6 +1,6 @@
 {
-  "name": "mat-menu-group",
-  "version": "0.0.1",
+  "name": "ngx-mat-menu-group",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": ">=10.0.0",
     "@angular/core": ">=10.0.0",

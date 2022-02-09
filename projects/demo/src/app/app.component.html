@@ -1,5 +1,114 @@
+<div style="display: flex; gap: 24px; justify-content: flex-start; align-items: flex-start; flex-direction: column">
 
+  <div style="display: flex; gap: 24px;flex-direction: column">
+    <mat-slide-toggle [(ngModel)]="accordion">Accordion</mat-slide-toggle>
+  <!--    <mat-slide-toggle [(ngModel)]="expandFirst">Expand first</mat-slide-toggle>-->
+  <!--    <mat-slide-toggle [(ngModel)]="expandSecond">Expand second</mat-slide-toggle>-->
+    <!--    <mat-slide-toggle [(ngModel)]="disableInnerItems">Disable inner items</mat-slide-toggle>-->
+    <mat-slide-toggle [(ngModel)]="disableSecondGroup">Disable second group</mat-slide-toggle>
+  </div>
 
-  <button mat-flat-button color="primary">
-    Open Menu
+  <button
+    mat-flat-button
+    color="primary"
+    #menuTrigger="matMenuTrigger"
+    [matMenuTriggerFor]="menu">
+    Menu with Groups
   </button>
+
+</div>
+
+
+<mat-menu #menu="matMenu" >
+
+  <ng-template matMenuContent>
+
+    <div [ngxMatMenuGroupAccordion]="accordion">
+      <button mat-menu-item><mat-icon>add_shopping_cart</mat-icon> Add</button>
+      <button mat-menu-item><mat-icon>contact_support</mat-icon> Help</button>
+
+      <mat-divider></mat-divider>
+
+      <div mat-menu-item class="group-trigger" [ngxMatMenuGroupTriggerFor]="itemGroup1">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </div>
+
+      <div ngx-mat-menu-group #itemGroup1>
+        <button mat-menu-item><mat-icon>auto_fix_high</mat-icon> Auto</button>
+        <button mat-menu-item [matMenuTriggerFor]="matEditSubMenu"><mat-icon>tonality</mat-icon> Tonality</button>
+        <button mat-menu-item><mat-icon>brightness_medium</mat-icon> Brightness</button>
+
+        <mat-menu #matEditSubMenu="matMenu">
+
+          <ng-template matMenuContent>
+
+            <button mat-menu-item>Submenu 1-1</button>
+            <button mat-menu-item>Submenu 1-2</button>
+
+            <div [ngxMatMenuGroupAccordion]="accordion">
+              <mat-divider></mat-divider>
+              <div mat-menu-item class="group-trigger" [ngxMatMenuGroupTriggerFor]="itemGroup11">
+                Submenu Group A
+              </div>
+              <div ngx-mat-menu-group #itemGroup11>
+                <button mat-menu-item>Submenu A-1</button>
+                <button mat-menu-item>Submenu A-2</button>
+                <button mat-menu-item>Submenu A-3</button>
+              </div>
+              <mat-divider></mat-divider>
+              <div mat-menu-item class="group-trigger" [ngxMatMenuGroupTriggerFor]="itemGroup12">
+                Submenu Group B
+              </div>
+              <div ngx-mat-menu-group #itemGroup12>
+                <button mat-menu-item>Submenu B-1</button>
+                <button mat-menu-item>Submenu B-2</button>
+                <button mat-menu-item>Submenu B-3</button>
+              </div>
+              <mat-divider></mat-divider>
+            </div>
+
+            <button mat-menu-item>Submenu 1-3</button>
+            <button mat-menu-item>Submenu 1-4</button>
+
+          </ng-template>
+
+        </mat-menu>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div mat-menu-item class="group-trigger" [ngxMatMenuGroupTriggerFor]="itemGroup2" [disabled]="disableSecondGroup">
+        <mat-icon>public</mat-icon>
+        <span>Publish & Share</span>
+      </div>
+
+      <div ngx-mat-menu-group #itemGroup2>
+        <button mat-menu-item [disabled]="disableInnerItems"><mat-icon>publish</mat-icon> Publish</button>
+        <button mat-menu-item [disabled]="disableInnerItems"><mat-icon>new_releases</mat-icon> Release</button>
+        <button mat-menu-item><mat-icon>notifications_active</mat-icon> Notify</button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div mat-menu-item class="group-trigger" [ngxMatMenuGroupTriggerFor]="itemGroup3">
+        <mat-icon>thumbs_up_down</mat-icon>
+        <span>Like & Dislike</span>
+      </div>
+
+      <div ngx-mat-menu-group #itemGroup3>
+        <button mat-menu-item><mat-icon>thumb_up</mat-icon> Like</button>
+        <button mat-menu-item [disabled]="disableInnerItems"><mat-icon>thumb_down</mat-icon> Dislike</button>
+        <button mat-menu-item><mat-icon>star</mat-icon> Add 5 stars</button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item><mat-icon>archive</mat-icon> Archive</button>
+      <button mat-menu-item><mat-icon>delete</mat-icon> Delete</button>
+
+    </div>
+
+  </ng-template>
+
+</mat-menu>

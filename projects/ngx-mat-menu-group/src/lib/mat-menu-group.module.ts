@@ -2,27 +2,24 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatMenuModule } from "@angular/material/menu";
 
-import { MatMenuGroupComponent } from './mat-menu-group.component';
-import { MatMenuGroupTriggerDirective } from "./ngx-mat-menu-group-trigger";
-import { MatMenuGroupAccordionDirective } from './mat-menu-groups.directive';
-import { BrowserModule } from "@angular/platform-browser";
+import { NgxMatMenuGroup } from './mat-menu-group.component';
+import { NgxMatMenuGroupTrigger } from "./mat-menu-group-trigger.directive";
+import { NgxMatMenuGroupAccordion } from './mat-menu-group-accordion.directive';
 
 
 @NgModule({
   declarations: [
-    MatMenuGroupComponent,
-    MatMenuGroupTriggerDirective,
-    MatMenuGroupAccordionDirective
+    NgxMatMenuGroup,
+    NgxMatMenuGroupTrigger,
+    NgxMatMenuGroupAccordion
   ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
     MatMenuModule
   ],
   exports: [
-    MatMenuGroupComponent,
-    MatMenuGroupTriggerDirective,
-    MatMenuGroupAccordionDirective
+    NgxMatMenuGroup,
+    NgxMatMenuGroupTrigger,
+    NgxMatMenuGroupAccordion
   ]
 })
 export class NgxMatMenuGroupModule { }

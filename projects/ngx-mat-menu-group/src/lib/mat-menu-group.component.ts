@@ -3,121 +3,135 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  ElementRef,
   EventEmitter,
-  HostBinding,
-  HostListener,
-  Input,
+  HostBinding, HostListener,
+  OnDestroy,
   Output,
   QueryList,
-  Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { animate, AnimationEvent, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { animate, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { MatMenuItem } from '@angular/material/menu';
 
 
 @Component({
-  selector: 'ngx-mat-menu-group, [ngx-mat-menu-group]',
+  selector: '[ngx-mat-menu-group]',
   templateUrl: './mat-menu-group.component.html',
   styleUrls: ['./mat-menu-group.component.scss'],
   host: {
-    'class': 'ngx-mat-menu-group ngx-mat-menu-group--closed'
+    'class': 'ngx-mat-menu-group'
   },
+  exportAs: 'ngxMatMenuGroup',
   animations: [
     trigger('contentAnimation', [
+      state('void', style({
+        'height': '0px'
+      })),
       state('close', style({
         'height': '0px'
       })),
       state('open', style({
-        'height': AUTO_STYLE
+        'height': '*'
       })),
-      transition('* => void', [style({'height': '0px'})]),
-      transition('close <=> open', [animate('225ms cubic-bezier(0.4,0.0,0.2,1)')])
+      transition('open => void', [style({ 'height': '*' })]),
+      transition('open <=> close', [animate('225ms cubic-bezier(0.4,0.0,0.2,1)')]),
     ]),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class MatMenuGroupComponent implements AfterContentInit {
+export class NgxMatMenuGroup implements AfterContentInit, OnDestroy {
 
-  @Output('opened')
-  private _openedEvent: EventEmitter<void> = new EventEmitter<void>();
-  @Output('closed')
-  private _closedEvent: EventEmitter<void> = new EventEmitter<void>();
-  @ContentChildren(MatMenuItem)
-  private _menuItems!: QueryList<MatMenuItem>;
-  private _menuItemsOriginStateMap: Map<MatMenuItem, boolean> = new Map<MatMenuItem, boolean>();
+  @Output()
+  groupOpened: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(
-    readonly host: ElementRef,
-    private _renderer: Renderer2
-  ) {
-  }
-
-  private _closed: boolean = true;
+  @Output()
+  groupClosed: EventEmitter<void> = new EventEmitter<void>();
 
   get closed(): boolean {
     return this._closed;
   }
+  private _closed: boolean = true;
 
-  @Input()
-  set closed(closed: boolean) {
-    this._closed = coerceBooleanProperty(closed);
-  }
+  @ContentChildren(MatMenuItem)
+  menuItems!: QueryList<MatMenuItem>;
 
   @HostBinding('@contentAnimation')
-  get _contentAnimationState() {
-    return this._closed ? 'close' : 'open';
+  _animateTo: 'close' | 'open' = 'close';
+
+  @HostBinding('class.ngx-mat-menu-group-closed')
+  private get _classClosed() {
+    return this._closed && !this._animating;
   }
+
+  private _animating: boolean = false;
+  private _menuItemsStateMap: Map<MatMenuItem, boolean> = new Map<MatMenuItem, boolean>();
+
+  constructor() {}
 
   ngAfterContentInit() {
-    if (this._closed) {
-      this.close();
-    }
+    this._saveMenuItemsState();
+    this._disableMenuItems();
   }
 
-  @HostListener('@contentAnimation.done', ['$event'])
-  _contentAnimationDone(e: AnimationEvent) {
-    console.log('animation done: ', e.fromState, ' => ', e.toState, ' (is closed=' + this.closed + ')')
-    if (e.toState == 'close') {
-      this._renderer.addClass(this.host.nativeElement, 'ngx-mat-menu-group--closed');
-      this._closedEvent.emit();
-    }
-    if (e.toState == 'open') {
-      this._openedEvent.emit();
-    }
-    if (e.toState == 'void') {
-      this._renderer.addClass(this.host.nativeElement, 'ngx-mat-menu-group--closed');
-    }
+  ngOnDestroy() {
+    this._loadMenuItemsState();
   }
 
   open() {
-    // renew disabled settings
-    this._menuItems.forEach(o => {
-      o.disabled = !!this._menuItemsOriginStateMap.get(o);
-    });
-    this._renderer.removeClass(this.host.nativeElement, 'ngx-mat-menu-group--closed');
+    if (!this._closed || this._animating) {
+      return
+    }
+    this._loadMenuItemsState();
     this._closed = false;
+    this._startAnimation('open');
+    this.groupOpened.emit();
   }
 
   close() {
-    // save disabled settings and disable all MatMenu's items so MatMenu's KeyManager will skip them
-    this._menuItems.forEach(o => {
-      this._menuItemsOriginStateMap.set(o, o.disabled);
-      o.disabled = true;
-    });
+    if (this._closed || this._animating) {
+      return
+    }
+    this._disableMenuItems();
     this._closed = true;
+    this._startAnimation('close');
+    this.groupClosed.emit();
   }
 
   toggle() {
-    if (this._closed) {
-      this.open();
-    } else {
-      this.close();
-    }
+    this._closed ? this.open() :  this.close();
+  }
+
+  // save initial MatMenu's items disabled settings
+  private _saveMenuItemsState() {
+    this.menuItems.forEach(o => {
+      this._menuItemsStateMap.set(o, o.disabled);
+    });
+  }
+
+  // restore initial MatMenu's items disabled settings
+  private _loadMenuItemsState() {
+    this.menuItems.forEach(o => {
+      o.disabled = !!this._menuItemsStateMap.get(o);
+    });
+  }
+
+  // disable all MatMenu's items so MatMenu's KeyManager will skip them
+  private _disableMenuItems() {
+    this.menuItems.forEach(o => {
+      o.disabled = true;
+    });
+  }
+
+  private _startAnimation(state: 'open' | 'close') {
+    this._animating = true;
+    this._animateTo = state;
+  }
+
+  @HostListener('@contentAnimation.done', ['$event'])
+  private _endAnimation(e: AnimationEvent) {
+    this._animating = false;
   }
 
 }

@@ -1,8 +1,8 @@
-import { MatMenuGroupsDirective } from './mat-menu-groups.directive';
+import { NgxMatMenuGroupAccordion } from './mat-menu-group-accordion.directive';
 
-describe('MatMenuGroupsDirective', () => {
+describe('NgxMatMenuGroupAccordion', () => {
   it('should create an instance', () => {
-    const directive = new MatMenuGroupsDirective();
+    const directive = new NgxMatMenuGroupAccordion();
     expect(directive).toBeTruthy();
   });
 });
